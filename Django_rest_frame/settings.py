@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions' ,
     'django.contrib.messages' ,
     'django.contrib.staticfiles' ,
+    'Authentication' ,
+    'rest_framework' ,
 ]
 
 MIDDLEWARE = [
@@ -78,6 +80,17 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache' ,
+        'LOCATION': 'redis://127.0.0.1:6379/1' ,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient' ,
+        } ,
+        'TIMEOUT': 60 * 10 ,
+    }
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -113,3 +126,5 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SUPER_USER = {'kira' , 'admin' , 'root'}
