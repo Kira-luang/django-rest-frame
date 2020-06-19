@@ -126,3 +126,14 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'App.Throttles.UserThrottle' ,
+        'App.Throttles.AddressRateThrottle' ,
+    ] ,
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '5/min' ,
+        'address': '10/m'
+    }
+}

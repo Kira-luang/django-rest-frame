@@ -10,6 +10,7 @@ class AddressSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    address_set = AddressSerializer(many=True , read_only=True)
     class Meta:
         model = User
-        fields = ['username' , 'id' , 'password']
+        fields = ['username' , 'id' , 'password' , 'address_set']

@@ -14,3 +14,9 @@ class Authentication(BaseAuthentication):
                 return user , token
         except:
             raise exceptions.AuthenticationFailed
+
+
+class UserAuthentication(Authentication):
+    def authenticate(self , request):
+        if request.method == 'GET':
+            return super().authenticate(request)

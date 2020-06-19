@@ -7,7 +7,8 @@ from rest_framework.generics import RetrieveAPIView , ListCreateAPIView , Retrie
 from rest_framework import exceptions
 from rest_framework.response import Response
 
-from App.auth import Authentication
+from App.Throttles import AddressRateThrottle , UserThrottle
+from App.auth import Authentication , UserAuthentication
 from App.models import User , Address
 from App.parameters import HTTP_ACTION_LOGIN , HTTP_ACTION_REGISTER
 from App.permissions import UserPermission
@@ -17,9 +18,13 @@ from App.serializers import UserSerializer , AddressSerializer
 class UsersViewSet(ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    authentication_classes = (UserAuthentication ,)
+    throttle_classes = [UserThrottle , ]
 
     def list(self , request , *args , **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
+        token = request.query_params.get('token')
+        userid = cache.get(token)
+        queryset = self.filter_queryset(self.queryset.filter(id=userid))
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -73,6 +78,7 @@ class AddressViewSet(viewsets.ModelViewSet):
     serializer_class = AddressSerializer
     authentication_classes = (Authentication ,)
     permission_classes = (UserPermission ,)
+    throttle_classes = [AddressRateThrottle , ]
 
     def create(self , request , *args , **kwargs):
         serializer = self.get_serializer(data=request.data)
