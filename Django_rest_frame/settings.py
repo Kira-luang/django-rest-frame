@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1o#o&h2&qpj-(6#)i7)8r9&x^%p!x)c&wh9v(r-z9bhtwmnsnt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions' ,
     'django.contrib.messages' ,
     'django.contrib.staticfiles' ,
+    'django_celery_results' ,
+    'Celeries' ,
 ]
 
 MIDDLEWARE = [
@@ -113,3 +115,16 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TASK_SERIALIZER = 'json'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_USER = 'kira_luang@163.com'
+EMAIL_HOST_PASSWORD = 'SGYZWVFANOTTXAQF'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+# EMAIL_USE_SSL=True
